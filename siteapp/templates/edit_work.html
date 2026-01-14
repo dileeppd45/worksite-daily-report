@@ -1,0 +1,62 @@
+{% extends "base.html"%}
+{% block title %} Employee Management {% endblock %}
+{% block extra_css %}
+<style></style>
+{% endblock %}
+
+{% block content %}
+    <div class="maindiv">
+        <div class="formdiv" >
+            <h2 class="form-title">Edit Work</h2>
+            <form method="post" class="form" >
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="sitename" class="form-label">Site:</label>
+                    <input type="text" id="sitename" name="sitename" value="{{employee.name}}" readonly class="form-control"  required>
+                </div>
+                <div class="form-group">
+                    <label for="workdetails" class="form-label">Work Details:</label>
+                    <textarea  name="workdetails" class="form-control"  required>{{employee.workdetails}}</textarea>
+                </div>
+                <div class="form-group">
+                  <label for="startdate" class="form-label">Start Date: </label>
+                  <input type="date" id="startdate" name="startdate" class="form-control" value='{{startdate}}' required>
+                </div>
+                <div class="form-group">
+                  <label for="enddate" class="form-label">End Date: </label>
+                  <input type="date" id="enddate" name="enddate" class="form-control" value='{{enddate}}'  required>
+                </div>
+                <div class="form-group">
+                    <label for="workstatus" class="form-label">Work Status:</label>
+                    <select name="workstatus" id="workstatus" class="form-control" required >
+                        <option selected value="{{employee.workstatus}}">Not Started</option>
+                        <option value="Not Started">Not Started</option>
+                        <option value="Ongoing">Ongoing</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Delayed">Delayed</option>
+                    </select>
+                </div>
+                <button type="submit" class="form-button">Update</button>
+            </form>
+        </div>
+        <div class="tables">
+            <div class="tablediv" >
+                <h2 class="table-title">Edit Work</h2>
+                <div style=" overflow: auto; max-height: 50vh;">
+                    <table class="table">
+                        <tr align="center">
+                            <th>Work Details</th>
+                            <th>Start Date - End Date</th>
+                            <th>Status</th>
+                        </tr>   
+                        <tr>   
+                            <td><div style="word-wrap: break-word; min-height: 20px;">{{ employee.workdetails }}</div></td>
+                            <td>{{ employee.startdate }} - {{ employee.enddate }}</td>
+                            <td>{{ employee.workstatus }}</td>
+                        </tr>                
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

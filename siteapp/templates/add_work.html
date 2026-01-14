@@ -1,0 +1,112 @@
+{% extends "base.html"%}
+{% block title %} Employee Management {% endblock %}
+{% block extra_css %}
+<style></style>
+{% endblock %}
+
+{% block content %}
+    <div class="maindiv">
+        <div class="formdiv">
+            <h2 class="form-title">Add New Work</h2>
+            <form class="form" method="post" >
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="sitename" class="form-label">Site:</label>
+                    <input type="text" id="sitename" name="sitename" value="{{site.name}}" readonly class="form-control"  required>
+                </div>
+                <div class="form-group">
+                    <label for="workdetails" class="form-label">Work Details:</label>
+                    <input type="text" id="workdetails" name="workdetails" class="form-control"  required>
+                </div>
+                <div class="form-group">
+                    <label for="startdate" class="form-label">Start Date:</label>
+                    <input type="date" id="startdate" name="startdate" class="form-control"  required>
+                </div>
+                <div class="form-group">
+                    <label for="enddate" class="form-label">End Date:</label>
+                    <input type="date" id="enddate" name="enddate" class="form-control"  required>
+                </div>
+                <div class="form-group">
+                    <label for="workstatus" class="form-label">Work Status:</label>
+                    <select name="workstatus" id="workstatus" class="form-control">
+                        <option value="Not Started">Not Started</option>
+                        <option value="Ongoing">Ongoing</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Delayed">Delayed</option>
+                    </select>
+                </div>
+                <button type="submit" class="form-button">Add Work</button>
+            </form>
+        </div>
+        <div class="tables">
+            <div class="tablediv">
+                <h2 class="table-title">Works in {{site.name}}</h2>
+                <div style=" overflow: auto; max-height: 50vh;">
+                    <table class="table">
+                        <tr align="center">
+                            <th>#</th>
+                            <th>Work Details</th>
+                            <th>Start Date - End Date</th>
+                            <th>Status</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        {% for worksite in worksites %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><div style="word-wrap: break-word; min-height: 20px;">{{ worksite.workdetails }}</div></td>
+                            <td>{{ worksite.startdate|date:"d-m-Y" }} - {{ worksite.enddate|date:"d-m-Y" }}</td>
+                            <td>{{ worksite.workstatus }}</td>
+                            <td><a href="{% url 'add_report' worksite.id  %}" style="text-decoration: none; color: yellowgreen">Daily Reports</a></td>
+                            <td >
+                                <div style=" display: flex;  gap:0.3rem;">
+                                    <a href="{% url 'editWork' worksite.id id %}" onclick="editEmployee('{{ worksite.id }}')" class="a-edit"  >Edit</a>
+                                    <a href="{% url 'binWork' worksite.id id %}" onclick="deleteEmployee('{{ worksite.id }}')" class="a-delete">Bin</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" align="center">No Any Works.</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <div class="tablediv" >
+                <h2 class="table-title">Works in Recycle Bin</h2>
+                <div style=" overflow: auto; max-height: 50vh;">
+                    <table class="table">
+                        <tr align="center">
+                            <th>#</th>
+                            <th>Work Details</th>
+                            <th>Start Date - End Date</th>
+                            <th>Status</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        {% for worksite in bin %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ worksite.workdetails }}</td>
+                            <td>{{ worksite.startdate }} - {{ worksite.enddate }}</td>
+                            <td>{{ worksite.workstatus }}</td>
+                            <td><a href="{% url 'add_report' worksite.id  %}" style="text-decoration: none; color: yellowgreen">Daily Reports</a></td>
+                            <td >
+                                <div style=" display: flex; gap:0.3rem; word-wrap: break-word; ">
+                                    <a href="{% url 'recycleWork' worksite.id id %}" onclick="recycleEmployee('{{ worksite.id }}')" class="a-edit"  >Restore</a>
+                                    <a href="{% url 'deleteWork' worksite.id id %}" onclick="deleteEmployee('{{ worksite.id }}')" class="a-delete">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" align="center">No Any Works.</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

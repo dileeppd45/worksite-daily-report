@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %} worksite {% endblock %}</title>
+        <style>
+            body {
+                font-family: sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f5f5f5;
+                color: #333;
+                width: 100%;
+                overflow-x: hidden;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            .navbar{
+                display: flex;
+                width: 100%;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                justify-content: flex-end;
+                align-items: center;
+                height: 4rem;
+                min-width: 400px;
+                box-sizing: border-box;
+            }
+            .nav-list {
+                list-style: none;
+                box-sizing: border-box;
+            }
+            .nav-items{
+                font-size: 0.75rem;
+                box-sizing: border-box;
+                display: flex;
+                gap:0.1rem;
+            }
+            .nav-items a {
+                color: #007bff;
+                text-decoration: none;
+                margin-right: 15px;
+                transition: color 0.3s ease-in-out;
+                border: 1px solid #007bff;
+                padding: 10px 15px;
+                border-radius: 5px;
+                background-color: #fff;
+                font-weight: bold;
+            }
+            .nav-items .logout-link{
+                color:orangered;
+            }
+            .nav-items a:hover {
+                background-color: #1ae4e4;
+                color: #fff;
+            }
+            .nav-items .logout-link:hover {
+                background-color: orangered;
+                color: #fff;
+            }
+            .maindiv{
+                max-width: 100%;
+                min-width: 400px;
+                display: flex;
+                gap: 0.5rem;
+                margin: auto;    
+            }
+            .formdiv {
+                background-color: #fff;
+                /* height: max-content; */
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                width: 400px;
+                min-width: 400px;
+                min-height: 10vh;
+                display: flex;
+                flex-direction: column;
+                gap: 0.5rem;
+                justify-content: flex-start;
+                align-items: center;
+                padding-bottom:10px;
+            }
+            .form-title {
+                font-size: 1.5rem;
+                font-weight: bold;
+                text-align: center;
+                color: #007bff;
+            }
+            .form{
+                width: 90%;
+                padding: 5px;
+            }
+            .form-group {
+                margin-bottom: 20px;
+            }
+            .form-label {
+                display: block;
+                margin-bottom: 10px;
+                font-weight: bold;
+            }
+
+            .form-control {
+                max-width: 100%;
+                min-width: 100%;
+                width: 100%;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                padding: 10px 0 10px 5px;
+                min-height: 20px;
+            }
+            .form-button{
+                width: 100%;
+                padding: 10px 20px;
+                background-color: #1ae1e5;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size:medium;
+                transition: color 0.3s ease-in-out;
+            }
+
+            .form-button:hover {
+                opacity: 0.8;
+                font-weight: bold;
+                background-color: #1ae4e4;
+            }
+            .tables{
+                min-height: 100vh;                
+                display: flex;
+                align-items:flex-start;
+                flex-direction: column;
+                gap:0.5rem;
+                width: 100%;
+                min-width:400px;
+                background-color: #fff;
+            }
+
+            .tablediv {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .table-title {
+                font-size: 24px;
+                font-weight: bold;
+                text-align: center;
+                color: #007bff;
+                margin-bottom: 20px;
+            }
+            .table{
+                max-width: 100%;
+                width: 100%;
+                padding: 0 1rem 0 0.5rem;
+                table-layout: fixed;
+
+            }
+            .table th,
+            .table td {
+                border: 1px solid #ddd;
+                padding: 5px;
+                text-align: left;
+                font-size: 16px;
+                word-wrap: break-word;
+                height: auto;
+            }
+
+            .table th {
+                font-weight: bold;
+                color: #333;
+
+            }
+            .a-edit {
+                color:#007bff;
+                background-color: transparent;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                text-decoration: none;
+            }
+
+            .a-edit:hover {
+                font-weight: bold;
+            }
+            .a-delete {
+                color:#ff007b;
+                background-color: transparent;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                text-decoration: none;
+
+            }
+
+            .a-delete:hover {
+                font-weight: bold;
+            }
+            @media screen and (max-width: 1000px) {
+                .maindiv {
+                    flex-direction: column-reverse;
+                    min-height: 100vh;
+                    justify-content: flex-end;
+                    background-color: #fff;
+
+                }
+                .formdiv{
+                    width: 100%;
+                    min-width: 400px;
+                }
+                .tables{
+                    min-height: max-content;
+                }
+            }
+        </style>
+        {% block extra_css %} {% endblock %}
+    </head>
+    <body>
+        <div class="navbar" >
+            <ul class="nav-list">
+                <li class="nav-items">
+                    <a href="{% url 'home' %}" class="home-link">Reports</a>
+                    <a href="{% url 'add_site' %}" class="add-category-link">Site</a>
+                    <a href="{% url 'add_employee' %}" class="add-category-link">Employee</a>
+                    <a href="{% url 'logout' %}" class="logout-link">Logout</a>
+                </li>
+            </ul>
+        </div>
+        {% block content %}
+        {% endblock %}
+    </body>
+</html>

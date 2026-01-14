@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WorkSheet</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+            width: 100vw;
+            height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }        
+        .navbar{
+            display: flex;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            justify-content: flex-end;
+            align-items: center;
+            height: 4rem;
+            min-width: 400px;
+            box-sizing: border-box;
+        }
+        .nav-list {
+            list-style: none;
+            box-sizing: border-box;
+        }
+        .nav-items{
+            font-size: 0.75rem;
+            box-sizing: border-box;
+            display: flex;
+            gap:0.1rem;
+        }
+        .nav-items a {
+            color: #007bff;
+            text-decoration: none;
+            margin-right: 15px;
+            transition: color 0.3s ease-in-out;
+            border: 1px solid #007bff;
+            padding: 10px 15px;
+            border-radius: 5px;
+            background-color: #fff;
+            font-weight: bold;
+        }
+        .nav-items .logout-link{
+            color:orangered;
+        }
+        .nav-items a:hover {
+            background-color: #1ae4e4;
+            color: #fff;
+        }
+        .nav-items .logout-link:hover {
+            background-color: orangered;
+            color: #fff;
+        }
+       /* General Table Styling */
+    .table {
+        width: 100%; 
+        margin: 0 auto; 
+        background-color: #fff;
+        border-collapse: collapse;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
+        font-size: 16px;
+    }
+            .table-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+    .table th {
+        background-color: #ede9e9; /* Dark gray for headers */
+        color: #1687f9; /* White text for headers */
+        font-size: 18px; /* Larger font for headers */
+        padding: 12px; 
+        text-align: left;
+        text-transform: uppercase;
+    }
+
+    .table td {
+        border: 1px solid #ddd; /* Thin borders for all cells */
+        padding: 10px;
+        font-size: 16px; /* Standard font size for cells */
+        color: #333; /* Darker text for clarity */
+    }
+
+    /* Alternating Row Backgrounds */
+    .table tr:nth-child(even) {
+        background-color: #f9f9f9; /* Light gray for even rows */
+    }
+
+    .table tr:nth-child(odd) {
+        background-color: #fff; /* White for odd rows */
+    }
+
+    /* Highlight Important Text */
+    .table .site-name {
+        font-weight: bold;
+        font-size: 18px;
+        color: #333; /* Dark gray for site names */
+    }
+
+   
+
+    .table .employee-info {
+        font-weight: bold;
+        color: #5cb85c; /* Green for employee info */
+    }
+
+    /* No Data Rows */
+    .table .no-data {
+        text-align: center;
+        color: #888; /* Light gray for no data messages */
+        font-size: 16px;
+        font-style: italic;
+    }
+
+    /* Header Row Bottom Borders */
+    .table th {
+        border-bottom: 2px solid #ccc;
+    }
+
+    /* Hover Effects */
+    .table tr:hover {
+        background-color: #f1f1f1; /* Subtle light gray hover effect */
+    }
+
+    
+
+        /* Table Styling */
+        
+
+        .table th,
+        .table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+            font-size: 16px;
+        }
+
+        .table th {
+            font-weight: bold;
+            color: #59d298;
+        }
+        .searchform{
+            width: 100%;
+        }
+        .form{
+            width: 90%;
+            padding: 5px;
+        }
+        input{
+            padding: 10px 0 10px 5px;
+            min-height: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-control {
+            width: 40px;
+        }
+        .form-button{
+            padding: 10px 20px;
+            background-color: #1ae1e5;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size:medium;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .form-button:hover {
+            opacity: 0.8;
+            font-weight: bold;
+            background-color: #1ae4e4;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar" >
+        <ul class="nav-list">
+            <li class="nav-items">
+                <a href="{% url 'home' %}" class="home-link">Reports</a>
+                <a href="{% url 'add_site' %}" class="add-category-link">Site</a>
+                <a href="{% url 'add_employee' %}" class="add-category-link">Employee</a>
+                <a href="{% url 'get_reports' start end %}" class="add-category-link">Save💾</a>
+                <a href="{% url 'logout' %}" class="logout-link">Logout</a>
+
+
+            </li>
+        </ul>
+    </div>
+    <table class="table">
+        <tr>
+            <th  class="table-title"><h2>Site Work Report</h2></th>
+        </tr>
+        <tr><th ><form class="searchform" method="post"> {% csrf_token %} <input  type="text" name="search" placeholder="search site"  value= "{{ search }}"  /> <input  class="form-control" type="number" name="start" min="1" value= "{{ start }}" required /> to <input class="form-control" type="number"  name="end" value="{{ end }}" min="1" required /> reports   <button class="form-button" type="submit">Search</button></form></th></tr>
+    </table>
+    <div style="height: 75vh; overflow: auto; scrollbar-shadow-color: #1ae4e4;">
+        <table class="table">                        
+            {% for i in alls %}
+                <tr>
+                    <th >#</th>
+                    <th>Site</th>
+                    <th>Status/Description</th>
+                    <th >Details</th>
+                    <th colspan="2">Materials</th>
+                </tr>
+                <tr>
+                    <td style="color: #1687f9;">{{ forloop.counter|add:start|add:"-1" }}</td>
+                    <td style="color: #1687f9;" class="site-name"><div style="word-wrap: break-word; min-height: 20px;">{{ i.0.0 }}</div></td>
+                    <td ><div style="word-wrap: break-word; min-height: 20px;">{{ i.0.1 }}</div></td>
+                    <td ><div style="word-wrap: break-word; min-height: 20px;">{{ i.0.2 }}</div></td>
+                    <td colspan="2"><div style="word-wrap: break-word; min-height: 20px;">{{ i.0.4 }}</div></td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th colspan="5"> <h2>Works in {{ i.0.0 }}</h2></th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th ><div style="float: right;">#</div></th>
+                    <th>Work</th>
+                    <th>Start - End Date</th>
+                    <th colspan="2">Status</th>
+                </tr>
+                {% for j in i.0.3 %}
+                    <tr>
+                        <td></td>
+                        <td ><div style="float: right; color: #cf1aeb;">{{ forloop.counter }}</div></td>
+                        <td><div style="word-wrap: break-word; min-height: 20px; color: #cf1aeb;">{{ j.0 }}</div></td>
+                        <td>{{ j.1|date:"d-m-Y" }} - {{ j.2|date:"d-m-Y" }}</td>
+                        <td colspan="2"  class="work-status">{{ j.3 }}</td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th colspan="4"><h3>Daywise Reports of Work</h3></th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th ><div style="float: right;">#</div></th>
+                        <th>Date</th>
+                        <th colspan="2">Remarks</th>
+                    </tr>
+                    {% for k in j.4 %}
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td ><div style="float: right; color: #eb1a8d;">{{ forloop.counter }}</div></td>
+                            <td style="color: #eb1a8d;">{{ k.0|date:"d-m-Y" }}</td>
+                            <td colspan="2" class="remarks"><div style="word-wrap: break-word; min-height: 20px;">{{ k.1 }}</div></td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th colspan="3"><h4>Assigned Employees</h4></th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th></th>
+                            <th></th>
+                            <th><div style="float: right;">#</div></th>
+                            <th>Employee</th>
+                            <th>Remarks</th>                            
+                        </tr>
+                        {% for l in k.2 %}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td ><div style="float: right; color: #1aeba2;">{{ forloop.counter }}</div></td>
+                                <td style="color: #1aeba2;">{{ l.0 }} ({{l.2}})</td>
+                                <td class="remarks"><div style="word-wrap: break-word; min-height: 20px;">{{ l.3 }}</div> </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="no-data">No Employees Assigned.</td>
+                            </tr>
+                        {% endfor %}
+                    {% empty %}
+                        <tr>
+                            <td colspan="6" class="no-data">No Reports Available.</td>
+                        </tr>
+                    {% endfor %}
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="no-data">No Works Assigned.</td>
+                    </tr>
+                {% endfor %}
+                <tr><th colspan="6"></th></tr>
+                <tr><th colspan="6"></th></tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="no-data">No Sites Available.</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    
+
+</body>
+</html>

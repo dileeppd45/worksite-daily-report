@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | eEarrings</title>
+    <style>
+        /* Modern CSS Reset & Layout */
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #082644 100%);
+            margin: 0;
+            display: flex; /* Centers the login card vertically and horizontally */
+            flex-direction: column;
+            justify-content:flex-start;
+            align-items: center;
+            min-height: 100vh; /* Ensures it takes full screen height */
+            overflow: hidden;
+        }
+
+        h1 {
+            color: #ffffff; /* Changed to white to pop against the blue gradient background */
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.2);
+        }
+
+        .container {
+            display: flex;
+            min-width: 400px;
+            width:40%;
+            padding: 40px;
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0px 10px 25px rgba(0,0,0,0.2);
+            box-sizing: border-box; /* Crucial for responsiveness */
+        }
+        form{
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Inputs */
+        input[type="text"], 
+        input[type="password"] {
+            width: 100%; /* Changed from fixed 370px to 100% */
+            padding: 12px 15px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background: #f9f9f9;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4a5568;
+            background: #fff;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            background-color: #4a5568;
+            color: #ffffff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: transform 0.1s ease, background-color 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #2d3748;
+            transform: translateY(-1px);
+        }
+
+        /* Error Messages */
+        .messages {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .alert-danger {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <h1>Login</h1>
+
+    <div class="container">
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <input type="text" name="username" placeholder="Username" minlength="3" required>
+            </div>
+
+            <div class="form-group">
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WORKSHEET</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #9f9898;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+        }
+
+        .navbar a {
+            color: #333;
+            text-decoration: none;
+            margin-right: 15px;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #757f89;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 20px;
+            color: #333;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .container {
+            padding: 20px;
+        }
+
+        .product-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-gap: 30px;
+            justify-items: center;
+        }
+
+        .product {
+            background-color: #fff;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            transition: box-shadow 0.3s;
+        }
+
+        .product:hover {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .product img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 16px;
+            margin-bottom: 15px;
+        }
+
+        .product-info {
+            padding-bottom: 15px;
+        }
+
+        .buy-now-button {
+            display: inline-block;
+            padding: 10px 20px;
+            text-decoration: none;
+            background-color: #1463b8;
+            color: #fff;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .buy-now-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'login' %}">WorkSheet</a>
+        <!-- <a class="navbar-brand" style="float: right;" href="{% url 'register' %}">Register</a> -->
+        <a class="navbar-brand" style="float: right;" href="{% url 'login' %}">Login</a>
+        <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button> -->
+        <!-- <div class="collapse navbar-collapse" id="navbarNav"> -->
+            <!-- <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'login' %}">ALL PRODUCTS</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Hoop Earrings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Stud Earrings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Ring Earrings</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{% url 'login' %}">Drop Earrring</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link " href="{% url 'login' %}">Jhumuka</a>
+                </li>
+            </ul> -->
+        
+        <!-- <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li> -->
+               
+                <!-- <form method="GET" action="{% url 'first' %}">
+                    <input type="text" name="search" placeholder="Search for products.." style="padding: 10px; margin-right: 5px;position: absolute;right: 70px;">
+                    <button type="submit" style="padding: 10px; border-radius: 5px;position: absolute;right: 0px;">Search</button>
+                </form> -->
+            <!-- </ul>
+        </div>
+    </nav> -->
+
+    <!-- <h2>Products</h2>
+    <div class="container">
+        <div class="product-list">
+        {% for product in products %}
+            <div class="product">
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                <div class="product-info">
+                    <h3>{{ product.name }}</h3>
+                    <p class="price">Price: &#8377;{{ product.price }} INR</p>
+                </div>
+                <a class="buy-now-button" href="{% url 'login'%}">View Details</a>
+            </div>
+        {% endfor %}
+        </div>
+    </div> -->
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

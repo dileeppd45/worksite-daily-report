@@ -1,0 +1,16 @@
+{% extends "base.html"%}
+{% block title %} Employee Management {% endblock %}
+{% block extra_css %}
+<style></style>
+{% endblock %}
+
+{% block content %}
+    <div class="maindiv">
+        <div style="text-align: center; padding: 50px;">
+            <h1>404 - Page Not Found</h1>
+            <p>Oops! The page you are looking for doesn't exist.</p>
+            <a href="{% url 'home' %}" class="a-edit">Go Back Home</a>
+            <a href="{% url 'login' %}" class="a-edit">Go To Login</a>
+        </div>
+    </div>
+{% endblock %}        

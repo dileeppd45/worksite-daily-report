@@ -1,0 +1,108 @@
+{% extends "base.html"%}
+{% block title %} Daywise Report Management {% endblock %}
+{% block extra_css %}
+    <style>
+        
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="maindiv">
+        <div class="formdiv">
+            <h2 class="form-title">Add Work Report</h2>
+            <form method="post" class="form" >
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="name" class="form-label">Worksite:</label>
+                  <input type="text" id="name" name="name" value="{{site}}" readonly class="form-control"  required>
+                </div>
+                <div class="form-group">
+                  <label for="date" class="form-label">Date:</label>
+                  <input type="date" id="date" name="date" class="form-control"  required>
+                </div>
+                <!-- <div class="form-group">
+                    <label for="remark" class="form-label">Remark:</label>
+                    <textarea id="remarks" name="remarks" class="form-control"  rows="8"></textarea>
+                </div> -->
+                <button type="submit" class="form-button">Add Report Date</button>
+              </form>
+        </div>
+        <div class="tables">
+            <div class="tablediv">
+                <h2 class="table-title">Daywise Report of {{site}}</h2>
+                <div style=" overflow: auto; max-height: 50vh;">
+                    <table class="table">
+                        <tr align="center">
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Remark</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        {% for worksite in reports %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+            
+                            <td>{{ worksite.date|date:"d-m-Y" }}</td>
+                            <td> <div style="word-wrap: break-word; min-height: 20px;">
+                                {{ worksite.remarks }}
+                                <a href="{% url 'editReport' worksite.id id %}" onclick="editEmployee('{{ worksite.id }}')" class="a-edit"  >Edit</a>
+                              </div>
+                              </td>
+                              <td><a href="{% url 'add_workers' worksite.id %}" style="text-decoration: none; color: yellowgreen">Employees</a></td>
+            
+                              <td >
+                                <div >
+                                    <a href="{% url 'binReport' worksite.id id %}" onclick="deleteEmployee('{{ worksite.id }}')" class="a-delete">Bin</a>
+                                </div>
+                            </td>
+                            
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" align="center">No Any Reports.</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <div class="tablediv" >
+                <h2 class="table-title">Daywise Report in Recycle Bin</h2>
+                <div style=" overflow: auto; max-height: 50vh;">
+                    <table class="table">
+                        <tr align="center">
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Remark</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        {% for worksite in bin %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+            
+                            <td>{{ worksite.date }}</td>
+                            <td> <div style="word-wrap: break-word; min-height: 20px;">
+                                {{ worksite.remarks }}
+                              </div></td>
+                              <td><a href="{% url 'add_workers' worksite.id %}" style="text-decoration: none; color: yellowgreen">Employees</a></td>
+            
+                              <td >
+                                <div style=" display: flex;  gap:0.3px;">
+                                    <a href="{% url 'recycleReport' worksite.id id %}" onclick="recycleEmployee('{{ worksite.id }}')" class="a-edit"  >Restore</a>
+                                    <a href="{% url 'deleteReport' worksite.id id %}" onclick="deleteEmployee('{{ worksite.id }}')" class="a-delete">Delete</a>
+                                </div>
+                            </td>
+                            
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" align="center">No Any Reports.</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

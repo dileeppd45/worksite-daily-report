@@ -1,0 +1,172 @@
+{% extends "base.html"%}
+{% block title %} Site Management {% endblock %}
+{% block extra_css %}
+    <style>
+        .searchform{
+            width:100%;
+        }
+        .searchinput{
+            padding: 10px 0 10px 5px;
+            /* min-height: 20px; */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size:0.75rem;            
+        }
+        .form-number {
+            width: 40px;
+            font-size:0.75rem;
+        }
+        .search-button{
+            padding: 10px 20px;
+            background-color: #1ae1e5;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size:0.75rem;
+            transition: color 0.3s ease-in-out;
+        }
+        @media screen and (max-width:1000px){
+            .searchinput{
+                padding: 5px 0px 5px 5px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size:0.5rem;            
+            }
+        .form-number {
+            width: 40px;
+            font-size:0.5rem;
+        }
+        .search-button{
+            padding: 5px 5px;
+            background-color: #1ae1e5;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size:0.5rem;
+            transition: color 0.3s ease-in-out;
+        }
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="maindiv">
+        <div class="formdiv">
+            <h2 class="form-title">Add New Site</h2>
+            <form class="form" method="post" >
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="name" class="form-label">Site Name:</label>
+                  <input type="text" id="name" name="name" class="form-control" placeholder="Enter site name" required>
+                </div>
+                <div class="form-group">
+                  <label for="address" class="form-label">Status/Description:</label>
+                  <textarea name="address" id="address" class="form-control"  placeholder="Enter site address" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="remarks" class="form-label">Details:</label>
+                    <textarea name="remarks" id="remarks" class="form-control"  placeholder="Enter Remarks" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="remarks" class="form-label">Materials:</label>
+                    <textarea name="materials" id="materials" class="form-control"   required></textarea>
+                </div>
+                <button type="submit" class="form-button">Add Site</button>
+            </form>
+        </div>
+        <div class="tables">
+            <div class="tablediv"  >
+                <h2 class="table-title">Sites</h2>
+                <table class="table">
+                    <tr>
+                        <th colspan="7"><form class="searchform" method="post" action="{% url 'searchsite' %}"> {% csrf_token %} <input  type="text" name="search" placeholder="search site" class="searchinput"  value= "{{ search }}"  /> <input  class="searchinput form-number" type="number" name="start" min="1" value= "{{ start }}" required /> to <input class="searchinput form-number" type="number"  name="end" value="{{ end }}" min="1" required /> reports   <button class="search-button" type="submit">Search</button></form></th>
+                    </tr>
+                </table>
+                <div style=" overflow: auto; max-height: 50vh;">
+                    <table class="table" >
+                        <tr align="center">
+                            <th>#</th>
+                            <th>Site</th>
+                            <th>Status/Description</th>
+                            <th>Details</th>
+                            <th>Materials</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        {% for worksite in sites %}
+                        <tr>
+                            <td>{{ forloop.counter|add:start|add:"-1" }}</td>
+                            <td><div style=" word-wrap: break-word; min-height: 20px;">
+                                {{ worksite.name }}
+                            </div></td>
+                            <td><div style="  word-wrap: break-word; min-height: 20px;">{{ worksite.address }}</div>
+                                </td>
+                            <td><div style=" word-wrap: break-word; min-height: 20px;">{{ worksite.remarks }}</div></td>
+                             <td><div style=" word-wrap: break-word; min-height: 20px;">{{ worksite.materials }}</div></td>
+                            <td><div style=" display: flex; justify-content:center;" >
+                                <a href="{% url 'add_work' worksite.id %}" style="text-decoration: none; color: yellowgreen">Works</a>
+                            </div>
+                            </td>
+                            <td >
+                                <div style=" display: flex; gap:0.3rem; justify-content:center;">
+                                    <a href="{% url 'editSite' worksite.id  %}" onclick="editEmployee('{{ worksite.id }}')" class="a-edit"  >Edit</a>
+                                    <a href="{% url 'binSite' worksite.id %}" onclick="deleteEmployee('{{ worksite.id }}')" class="a-delete">Bin</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" align="center">No Any Sites.</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <div class="tablediv" >
+                <h2 class="table-title">Sites in Recycle Bin</h2>
+                <div style=" overflow: auto; max-height: 50vh;">
+                    <table class="table">
+                        <tr align="center">
+                            <th>#</th>
+                            <th>Site</th>
+                            <th>Status/Description</th>
+                            <th>Details</th>
+                             <th>Materials</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        {% for worksite in bin %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><div style="word-wrap: break-word; min-height: 20px;">
+                                {{ worksite.name }}
+                            </div></td>
+                            <td><div style=" word-wrap: break-word; min-height: 20px;">{{ worksite.address }}</div>
+                                </td>
+                            <td><div style=" word-wrap: break-word; min-height: 20px;">{{ worksite.remarks }}</div></td>
+                             <td><div style="word-wrap: break-word; min-height: 20px;">{{ worksite.materials }}</div></td>
+                            <td><div style=" display: flex; justify-content:center;" >
+                                <a href="{% url 'add_work' worksite.id %}" style="text-decoration: none; color: yellowgreen">Works</a>
+                            </div>
+                            </td>
+                            <td >
+                                <div style=" display: flex;  gap:0.3rem;justify-content:center;">
+                                    <a href="{% url 'recycleSite' worksite.id %}" onclick="recycleEmployee('{{ worksite.id }}')" class="a-edit"  >Restore</a>
+                                    <a href="{% url 'deleteSite' worksite.id %}" onclick="deleteEmployee('{{ worksite.id }}')" class="a-delete">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="7" align="center">No Any Sites.</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

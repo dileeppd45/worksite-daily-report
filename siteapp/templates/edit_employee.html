@@ -1,0 +1,50 @@
+{% extends "base.html"%}
+{% block title %} Employee Management {% endblock %}
+{% block extra_css %}
+<style></style>
+{% endblock %}
+
+{% block content %}
+    <div class="maindiv">
+        <div class="formdiv" >
+            <h2 class="form-title">Edit Employee Details</h2>
+            <form method="post" class="form" >
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="name" class="form-label">Employee Name:</label>
+                    <input type="text" id="name" name="name" class="form-control" placeholder="Enter employee name" value="{{employee.name}}" required>
+                </div>
+                <div class="form-group">
+                    <label for="name" class="form-label">Employee Details:</label>
+                    <input type="text" id="remarks" name="remarks" class="form-control" placeholder="Job position" value="{{employee.remarks}}" required>
+                </div>
+                <div class="form-group">
+                    <label for="status" class="form-label">Employee Status:</label>
+                    <select name="status" id="status" class="form-control" required>
+                        <option selected value="{{employee.status}}">{{employee.status}} this company</option>
+                        <option value="in">in this company</option>
+                        <option value="not in">not in this company</option>
+                    </select>
+                </div>
+                <button type="submit" class="form-button">Update</button>
+            </form>
+        </div>
+        <div class="tables">
+            <div class="tablediv" >
+                <h2 class="table-title">Update Employee</h2>
+                <div style=" overflow: auto; max-height: 50vh;">
+                    <table class="table">
+                        <tr align="center" >
+                            <th>Employees</th>
+                            <th>Position</th>
+                        </tr>                     
+                        <tr>                        
+                            <td ><div style="word-wrap: break-word; ">{{ employee.name }}</div></td>
+                            <td> <div style="word-wrap: break-word; min-height: 20px;">{{ employee.remarks }}</div></td>
+                        </tr>                            
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

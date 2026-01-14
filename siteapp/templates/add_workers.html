@@ -1,0 +1,78 @@
+{% extends "base.html"%}
+{% block title %} Employee Management {% endblock %}
+{% block extra_css %}
+<style></style>
+{% endblock %}
+
+{% block content %}
+    <div class="maindiv">
+        <div class="formdiv" >
+            <h2 class="form-title">Create or Update Employee Attendance</h2>
+            <form method="post" class="form" >
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="date" class="form-label">Report Date:</label>
+                    <input type="text" id="date" name="date" value ="{{site.date}}" class="form-control" readonly required>
+                </div>
+                <div class="form-group">
+                    <label for="employee" class="form-label">Employee :</label>
+                    <select name="employee" id="employee" class="form-control" required>
+                        <option value="">Select</option>
+                        {% for emp in employee %}
+                            <option value="{{ emp.id }}">{{ emp.name }}({{emp.remarks}})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- <div class="form-group">
+                    <label for="Attendance" class="form-label">Attendance :</label> 
+                    <select name="attendance" id="attendance" class="form-control">
+                        <option value="Present">Present</option>
+                        <option value="Absent">Absent</option>
+                        <option value="Leave">Leave</option>
+                    </select>  
+                </div> -->
+                <div class="form-group">
+                    <label for="remark" class="form-label">Remark:</label>
+                    <input type="text" id="remark" name="remark"  class="form-control"  required>
+                </div>
+    
+                <button type="submit" class="form-button">Add</button>
+            </form>
+        </div>
+        <div class="tables">
+            <div class="tablediv">
+                <h2 class="table-title">Employees On {{site.date}}</h2>
+                <div style=" overflow: auto; max-height: 50vh;">
+                    <table class="table">
+                        <tr align="center">
+                            <th>#</th>
+                            <th>Employees</th>
+                            <th>Position</th>
+                            <th>Remark</th>
+                            <th></th>
+                        </tr>
+                        {% for worksite in employees %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><div style=" word-wrap: break-word; ">{{ worksite.employee }}</div></td>
+                            <td>{{ worksite.employee.remarks }}</td>
+                            <td> <div style=" word-wrap: break-word; min-height: 20px;">
+                                {{ worksite.remarks }}
+                              </div></td>
+                              <td >
+                                <div >
+                                <a href="{% url 'RemoveWorker' worksite.id id %}" onclick="deleteEmployee('{{ worksite.id }}')" class="a-delete">Remove</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" align="center">No Any Employees.</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
